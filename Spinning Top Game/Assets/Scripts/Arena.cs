@@ -9,13 +9,17 @@ public class Arena : MonoBehaviour {
 
     public float intensitevity;
 
+    public Vector3 offset;
+
 	void Start () {
         xSeed = Random.Range(0, 10000);
         zSeed = Random.Range(0, 10000);
+
+
     }
 	
 	void Update () {
-        transform.position = new Vector3(Mathf.Sin(Time.timeSinceLevelLoad + xSeed) * intensitevity, -10, (Mathf.Sin(Time.timeSinceLevelLoad + zSeed)));
+        transform.position = new Vector3((Mathf.Sin(Time.timeSinceLevelLoad + xSeed) * intensitevity) + offset.x, offset.y, (Mathf.Sin(Time.timeSinceLevelLoad + zSeed) * intensitevity) + offset.z);
         transform.parent.Rotate(new Vector3(0,1,0) * Time.timeScale);
 	}
 }

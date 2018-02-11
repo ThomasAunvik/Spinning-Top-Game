@@ -8,6 +8,7 @@ public class MenuManager : MonoBehaviour {
 
     [SerializeField] private Canvas mainMenuCanvas;
     [SerializeField] private Canvas settingsMenuCanvas;
+    [SerializeField] private Canvas informationCanvas;
 
     [SerializeField] private Canvas loadLevelCanvas;
     [SerializeField] private Slider loadLevelSlider;
@@ -15,12 +16,26 @@ public class MenuManager : MonoBehaviour {
     [SerializeField] private GameObject spinnerModel;
 
     [SerializeField] private Text coinText;
+    
+    [SerializeField] private Text informationTextComponent;
+    [TextArea]
+    [SerializeField] private string[] informationText;
+    private int infoPage = 0;
+
+    [SerializeField] private Button informationNextButton;
+    [SerializeField] private Button informationPrevButton;
 
     void Start () {
         OpenMainMenuCanvas();
         if (GameManager.Instance) coinText.text = GameManager.Instance.GetCoins.ToString();
         else coinText.text = "0";
 	}
+
+    private void Update()
+    {
+        informationNextButton.interactable = infoPage < informationText.Length - 1;
+        informationPrevButton.interactable = infoPage > 0;
+    }
 
     public void OpenMainMenuCanvas()
     {
@@ -29,6 +44,7 @@ public class MenuManager : MonoBehaviour {
         
         settingsMenuCanvas.enabled = false;
         loadLevelCanvas.enabled = false;
+        informationCanvas.enabled = false;
     }
 
     public void OpenSoloMenuCanvas()
@@ -37,10 +53,21 @@ public class MenuManager : MonoBehaviour {
 
         mainMenuCanvas.enabled = false;
         settingsMenuCanvas.enabled = false;
+        informationCanvas.enabled = false;
 
         spinnerModel.SetActive(false);
         
         StartCoroutine(LoadScene());
+    }
+
+    public void OpenInformationMenuCanvas()
+    {
+        informationCanvas.enabled = true;
+
+        settingsMenuCanvas.enabled = false;
+        loadLevelCanvas.enabled = false;
+        mainMenuCanvas.enabled = false;
+        spinnerModel.SetActive(false);
     }
 
     IEnumerator LoadScene()
@@ -60,7 +87,32 @@ public class MenuManager : MonoBehaviour {
 
         mainMenuCanvas.enabled = false;
         loadLevelCanvas.enabled = false;
+        informationCanvas.enabled = false;
 
         spinnerModel.SetActive(false);
+    }
+
+    public void Quit()
+    {
+        Application.Quit();
+    }
+
+    public void NextInfoPage()
+    {
+        OpenPage(infoPage + 1);
+    }
+
+    public void PreviousInfoPage()
+    {
+        OpenPage(infoPage - 1);
+    }
+
+    public void OpenPage(int page)
+    {
+        if (page < 0) page = 0;
+        else if (page > informationText.Length - 1) page = informationText.Length - 1;
+
+        informationTextComponent.text = informationText[page];
+        infoPage = page;
     }
 }
