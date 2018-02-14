@@ -73,7 +73,7 @@ public class MenuManager : MonoBehaviour {
     IEnumerator LoadScene()
     {
         AsyncOperation loadSceneOperation = SceneManager.LoadSceneAsync(2);
-        while (!loadSceneOperation.isDone)
+        while (loadSceneOperation != null && !loadSceneOperation.isDone)
         {
             loadLevelSlider.value = loadSceneOperation.progress;
             yield return null;

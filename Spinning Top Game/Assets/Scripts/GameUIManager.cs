@@ -20,6 +20,7 @@ public class GameUIManager : MonoBehaviour {
 
     public void MainMenu()
     {
+        GameManager.ResumeGame();
         GameManager.LoadLevel(1);
     }
 }
